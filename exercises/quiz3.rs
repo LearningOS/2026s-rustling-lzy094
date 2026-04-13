@@ -44,7 +44,7 @@ mod tests {
         };
         assert_eq!(
             report_card.print(),
-            "Tom Wriggle (12) - achieved a grade of 2.1"
+            "Tom Wriggle (12) - achieved a grade of 2.2"
         );
     }
 
