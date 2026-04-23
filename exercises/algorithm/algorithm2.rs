@@ -73,8 +73,20 @@ impl<T> LinkedList<T> {
         }
     }
 	pub fn reverse(&mut self){
-		// TODO
-	}
+        let mut current = self.start;
+        let mut temp = None;
+
+        while let Some(mut curr_ptr) = current {
+            unsafe {
+                temp = curr_ptr.as_mut().next;
+                curr_ptr.as_mut().next = curr_ptr.as_mut().prev;
+                curr_ptr.as_mut().prev = temp;
+                current = temp;
+            }
+        }
+
+        std::mem::swap(&mut self.start, &mut self.end);
+    }
 }
 
 impl<T> Display for LinkedList<T>

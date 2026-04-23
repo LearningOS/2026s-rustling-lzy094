@@ -70,14 +70,43 @@ impl<T> LinkedList<T> {
         }
     }
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+    where
+        T: Ord + Clone,
+    {
+        let mut result = LinkedList::new();
+        let mut curr_a = list_a.start;
+        let mut curr_b = list_b.start;
+
+        loop {
+            match (curr_a, curr_b) {
+                (Some(a_ptr), Some(b_ptr)) => unsafe {
+                    let a_node = a_ptr.as_ref();
+                    let b_node = b_ptr.as_ref();
+
+                    if a_node.val <= b_node.val {
+                        result.add(a_node.val.clone());
+                        curr_a = a_node.next;
+                    } else {
+                        result.add(b_node.val.clone());
+                        curr_b = b_node.next;
+                    }
+                },
+                (Some(a_ptr), None) => unsafe {
+                    let a_node = a_ptr.as_ref();
+                    result.add(a_node.val.clone());
+                    curr_a = a_node.next;
+                },
+                (None, Some(b_ptr)) => unsafe {
+                    let b_node = b_ptr.as_ref();
+                    result.add(b_node.val.clone());
+                    curr_b = b_node.next;
+                },
+                (None, None) => break,
+            }
         }
-	}
+        result
+    }
+
 }
 
 impl<T> Display for LinkedList<T>
